@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -40,6 +41,18 @@ public class JwtUtil {
         } catch (JwtException e) {
             return false;
         }
+    }
+
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("roles", List.class);
+    }
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 //    generateToken() → "Make me a new entry pass for this user, valid for 1 day."
 //    extractUsername() → "Read the username from the entry pass."

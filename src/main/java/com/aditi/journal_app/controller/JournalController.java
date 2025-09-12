@@ -32,7 +32,7 @@ public class JournalController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         journal.setUser(user);
         JournalEntry saved = journalRepository.save(journal);
-        return new JournalEntryDTO(saved); // ✅ return DTO
+        return new JournalEntryDTO(saved); // return DTO
     }
 
     // Get current user's journals
@@ -59,5 +59,24 @@ public class JournalController {
         journalRepository.delete(journal);
         return "Deleted!";
     }
+
+    @PutMapping("/{id}/share")
+    public String shareJournal(@PathVariable Long id, Authentication authentication) {
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        JournalEntry journal = journalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Journal not found"));
+
+        if (!journal.getUser().getId().equals(user.getId())) {
+            return "Not allowed!";
+        }
+
+        journal.setShared(true);
+        journalRepository.save(journal);
+        return "Journal shared successfully!";
+    }
+
+
 }
 

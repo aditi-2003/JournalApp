@@ -37,8 +37,8 @@ public class AuthController {
         // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Assign default role
-        user.setRoles(Set.of("ROLE_USER"));
+        // Lock down signup : only user role can signup not admin
+        user.setRoles(Set.of("ROLE_USER", "ROLE_VIEWER"));
 
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully!");

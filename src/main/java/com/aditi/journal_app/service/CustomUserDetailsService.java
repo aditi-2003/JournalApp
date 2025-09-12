@@ -22,10 +22,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         // Wrap your custom User entity into Spring Security's UserDetails
-        return org.springframework.security.core.userdetails.User
+        UserDetails ud=  org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword()) // already encoded
                 .authorities(user.getRoles().toArray(new String[0])) // roles converted to authorities
                 .build();
+        System.out.println("Authorities: " + ud.getAuthorities());
+        return ud;
     }
 }

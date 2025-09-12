@@ -14,20 +14,19 @@ public class User {
 
     private String username;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     // Roles stored in a separate table
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
     //  One user can have many journal entries
 //    cascade = CascadeType.ALL → if a user is deleted, their journal entries are also deleted.
 //    orphanRemoval = true → if a journal entry is removed from the set, it’s also removed from DB.
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+//    @JsonIgnore
     private Set<JournalEntry> journalEntries = new HashSet<>();
 
     public User() {}

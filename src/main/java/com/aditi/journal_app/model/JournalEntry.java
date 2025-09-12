@@ -1,6 +1,7 @@
 package com.aditi.journal_app.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,9 +17,12 @@ public class JournalEntry {
     @Column(length = 2000) // allow longer journal content
     private String content;
 
-    // ✅ Many entries belong to ONE user
+    private boolean shared = false; // new field
+
+    // Many entries belong to ONE user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // foreign key in journalentry table
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 
     public JournalEntry() {}
@@ -41,6 +45,10 @@ public class JournalEntry {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+    // getters & setters
+    public boolean isShared() { return shared; }
+    public void setShared(boolean shared) { this.shared = shared; }
 }
 
 
