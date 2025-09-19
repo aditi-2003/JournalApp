@@ -20,19 +20,14 @@ public class ViewerController {
         this.journalRepository = journalRepository;
     }
 
-    // View all shared journals
-    @GetMapping("/journals/public")
+    @GetMapping("/journals")
     public List<JournalEntryDTO> getSharedJournals() {
         return journalRepository.findAll().stream()
                 .filter(JournalEntry::isShared) // only shared ones
-                .map(journal -> new JournalEntryDTO(
-                        journal.getId(),
-                        journal.getTitle(),
-                        journal.getContent(),
-                        journal.getUser().getUsername(),
-                        journal.isShared()
-                ))
+                .map(JournalEntryDTO::new)      // use DTO constructor directly
                 .collect(Collectors.toList());
     }
+
+
 }
 

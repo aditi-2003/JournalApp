@@ -28,6 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/weather").permitAll()   // 🔹 allow weather endpoint publicly
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")   // only admins
                         .requestMatchers("/api/journals/**").hasRole("USER") // normal users
